@@ -1,12 +1,14 @@
 /// <reference types="cypress" />
 
+const users = require("../fixtures/users.json");
+
 describe("Authentication Tests suite", () => {
   beforeEach(() => {
     cy.visit("https://www.saucedemo.com/");
   });
-  it("should authenticate user with valid credentialds", () => {
-    cy.get('[data-test="username"]').type("standard_user");
-    cy.get('[data-test="password"]').type("secret_sauce");
+  it("should authenticate user with valid credentials", () => {
+    cy.get('[data-test="username"]').type(users[0].username);
+    cy.get('[data-test="password"]').type(users[0].password);
     cy.get('[data-test="login-button"]').click();
 
     cy.url().should("contain", "/inventory");
@@ -15,8 +17,8 @@ describe("Authentication Tests suite", () => {
   });
 
   it("should display error message for invalid password", () => {
-    cy.get('[data-test="username"]').type("standard_user");
-    cy.get('[data-test="password"]').type("secret_david");
+    cy.get('[data-test="username"]').type(users[1].username);
+    cy.get('[data-test="password"]').type(users[1].password);
     cy.get('[data-test="login-button"]').click();
 
     cy.get('[data-test="error"]')
@@ -25,8 +27,8 @@ describe("Authentication Tests suite", () => {
   });
 
   it("should display error message for invalid user", () => {
-    cy.get('[data-test="username"]').type("standardfsdfsqr");
-    cy.get('[data-test="password"]').type("secret_sauce");
+    cy.get('[data-test="username"]').type(users[2].username);
+    cy.get('[data-test="password"]').type(users[2].password);
     cy.get('[data-test="login-button"]').click();
 
     cy.get('[data-test="error"]')
@@ -35,8 +37,8 @@ describe("Authentication Tests suite", () => {
   });
 
   it("should display specific error message for locked out user", () => {
-    cy.get('[data-test="username"]').type("locked_out_user");
-    cy.get('[data-test="password"]').type("secret_sauce");
+    cy.get('[data-test="username"]').type(users[3].username);
+    cy.get('[data-test="password"]').type(users[3].password);
     cy.get('[data-test="login-button"]').click();
 
     cy.get('[data-test="error"]')
