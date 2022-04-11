@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { Login } from "../pages/login";
 const users = require("../fixtures/users.json");
 
 describe("Authentication Tests suite", () => {
@@ -7,19 +8,16 @@ describe("Authentication Tests suite", () => {
     cy.visit("https://www.saucedemo.com/");
   });
   it("should authenticate user with valid credentials", () => {
-    cy.get('[data-test="username"]').type(users[0].username);
-    cy.get('[data-test="password"]').type(users[0].password);
-    cy.get('[data-test="login-button"]').click();
-
+    //Login.login(users[0].username, users[0].password);
+    cy.login(users[0].username, users[0].password);
     cy.url().should("contain", "/inventory");
     cy.get(".title").should("be.visible");
     cy.get(".inventory_item").should("exist");
   });
 
   it("should display error message for invalid password", () => {
-    cy.get('[data-test="username"]').type(users[1].username);
-    cy.get('[data-test="password"]').type(users[1].password);
-    cy.get('[data-test="login-button"]').click();
+    //Login.login(users[1].username, users[1].password);
+    cy.login(users[1].username, users[1].password);
 
     cy.get('[data-test="error"]')
       .should("be.visible")
@@ -27,9 +25,8 @@ describe("Authentication Tests suite", () => {
   });
 
   it("should display error message for invalid user", () => {
-    cy.get('[data-test="username"]').type(users[2].username);
-    cy.get('[data-test="password"]').type(users[2].password);
-    cy.get('[data-test="login-button"]').click();
+    //Login.login(users[2].username, users[2].password);
+    cy.login(users[2].username, users[2].password);
 
     cy.get('[data-test="error"]')
       .should("be.visible")
@@ -37,9 +34,8 @@ describe("Authentication Tests suite", () => {
   });
 
   it("should display specific error message for locked out user", () => {
-    cy.get('[data-test="username"]').type(users[3].username);
-    cy.get('[data-test="password"]').type(users[3].password);
-    cy.get('[data-test="login-button"]').click();
+    //Login.login(users[3].username, users[3].password);
+    cy.login(users[3].username, users[3].password);
 
     cy.get('[data-test="error"]')
       .should("be.visible")
